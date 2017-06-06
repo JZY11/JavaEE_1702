@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<!--这是一个典型的JSP，它包含了JSP中常用的元素-->
+<!--这是一个非常典型的JSP，它包含了JSP中常用的元素-->
 <%!
     String getDate() {
         return new java.util.Date().toString();
@@ -10,15 +10,16 @@
 <html>
 <head><title>一个典型的JSP</title></head>
 <body>
-<jsp:include page="header.jsp"/>
+<%--<jsp:include page="header.jsp"/>--%>
+<%@include file="header.jsp"%>
 <div style="text-align: center">
     <table style="margin: 0 auto;">
-        <tr style="background: #777;">
-            <th>----------------</th>
+        <tr style="background: red;">
+            <th>--你-----好-------啊--</th>
         </tr>
         <%
             // color
-            String c1 = "#9cf", c2 = "#8c3";
+            String c1 = "yellow", c2 = "blue";
             for (int i = 0; i < count; i++) {
                 String color;
                 if (i % 2 == 0) {
