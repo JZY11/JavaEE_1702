@@ -31,6 +31,15 @@
             }
         %>
     </table>
+    //        out 输出
+    //        request 请求\ [rɪ'kwest]
+    //        response 响应\ [rɪ'spɒns]
+    //        session 会话\ ['seʃ\(ə\)n]
+    //        application 应用程序\ [ˌæplɪ'keɪʃ\(ə\)n]
+    //        pageContext 上下文\ ['kɒntekst]
+    //        page
+    //        config 配置\ [kən'fɪɡ]
+    //        exception
     <hr/>
     当前的时间是：
     <%-- 下面是使用表达式的例子 --%>
