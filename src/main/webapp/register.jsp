@@ -30,6 +30,7 @@
     statement.setString(1,nick);
     statement.setString(2,mobil);
     statement.setString(3, password);
+    System.out.println(statement);
     statement.executeUpdate();
 
     statement.close();
