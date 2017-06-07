@@ -20,6 +20,7 @@
           <element id="library" level="project" name="Gradle: javax:javaee-api:7.0" />
           <element id="library" level="project" name="Gradle: com.sun.mail:javax.mail:1.5.0" />
           <element id="library" level="project" name="Gradle: javax.activation:activation:1.1" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.42/80a448a3ec2178b649bb2e3cb3610fab06e11669/mysql-connector-java-5.1.42.jar" />
         </element>
       </element>
     </root>
