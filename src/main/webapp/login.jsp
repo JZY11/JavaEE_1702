@@ -32,9 +32,9 @@
         response.sendRedirect("home.jsp");// 跳转到home.jsp页面  Redirect：重定向
     }else {
         //failed
-        response.sendRedirect("index.jsp"); // redirect 重定向 地址栏地址有变化
+//        response.sendRedirect("index.jsp"); // redirect 重定向 地址栏地址有变化
         request.setAttribute("message","用户名或密码错误");
-//        request.getRequestDispatcher("index.sql").forward(request,response);// forward 转发 地址栏地址没有变化
+        request.getRequestDispatcher("index.jsp").forward(request,response);// forward 转发 地址栏地址没有变化
     }
 
 

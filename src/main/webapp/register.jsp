@@ -36,7 +36,7 @@
     statement.close();
     connection.close();
 
-    response.sendRedirect("index.jsp");
+    response.sendRedirect("index.jsp");//跳到index.jsp页面
 %>
 </body>
 </html>
