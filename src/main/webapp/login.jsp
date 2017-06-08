@@ -40,15 +40,16 @@
     ResultSet resultSet = statement.executeQuery();//executeQuery()查询    返回一结果集ResultSet
 
 
-    if(resultSet.next()){
+    if(resultSet.next()){//从查询的结果集中判断是否有下一个(即是否含有select语句返回的所有行中的一行)
         //success
         System.out.println(resultSet.getString("nick"));
-        request.setAttribute("nick",resultSet.getString("nick"));
+//        request.setAttribute("nick", resultSet.getString("nick"));
+        session.setAttribute("nick",resultSet.getString("nick"));
 //        response.sendRedirect("home.jsp");// 跳转到home.jsp页面  Redirect：重定向  不能保存request内的属性
         request.getRequestDispatcher("home.jsp").forward(request,response);
     }else {
         //failed
-//        response.sendRedirect("index.jsp"); // redirect 重定向 地址栏地址有变化
+//        response.sendRedirect("index.jsp"); // redirect 重定向 地址栏地址有变化   能保存request内的属性
         request.setAttribute("message","用户名或密码错误");
         request.getRequestDispatcher("index.jsp").forward(request,response);// forward 转发 地址栏地址没有变化
     }
