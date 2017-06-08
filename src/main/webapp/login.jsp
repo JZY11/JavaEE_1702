@@ -15,10 +15,10 @@
 </head>
 <body>
 <%
-    String mobile = request.getParameter("mobil");
+    String mobile = request.getParameter("mobil");//从表单中获取添加的值即获取表单参数
     String password = request.getParameter("password");
     out.println(mobile + "," + password);
-    new Driver();
+    new Driver();//进行数据库驱动
     java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql:///?user=root&password=system");
     String sql = "SELECT * FROM db_javaee.user WHERE mobil=? AND password=?";
     PreparedStatement statement = connection.prepareStatement(sql);
@@ -26,10 +26,12 @@
     statement.setString(2,password);
     System.out.println(statement);
 //    statement.executeUpdate();
-    ResultSet resultSet = statement.executeQuery();//executeQuery()广义上的更新包括：update,insert,delete返回结果集ResultSet
+    ResultSet resultSet = statement.executeQuery();//executeQuery()查询    返回一结果集ResultSet
     if(resultSet.next()){
         //success
-        response.sendRedirect("home.jsp");// 跳转到home.jsp页面  Redirect：重定向
+        request.setAttribute("nick",resultSet.getString("nick"));
+//        response.sendRedirect("home.jsp");// 跳转到home.jsp页面  Redirect：重定向  不能保存request内的属性
+        request.getRequestDispatcher("index.jsp").forward(request,response);
     }else {
         //failed
 //        response.sendRedirect("index.jsp"); // redirect 重定向 地址栏地址有变化

@@ -17,7 +17,16 @@
   <input type="password" name="password" placeholder="密码"><br>
   <input type="submit" value="登录">
 </form>
-<p><%=request.getAttribute("message")%></p>
+<%--<p><%=request.getAttribute("message")%></p>--%>
+<p>
+    <%
+        String message = (String) request.getAttribute("message");
+        if (message != null) {
+            out.println(message);
+        }
+    %>
+    <%-- 判断属性是否有对应的值 --%>
+</p>
 <a href="signup.jsp">注册</a>
 </body>
 </html>

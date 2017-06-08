@@ -2,7 +2,8 @@
 <%@ page import="com.mysql.jdbc.Connection" %>
 <%@ page import="java.sql.DriverManager" %>
 <%@ page import="java.sql.PreparedStatement" %>
-<%@ page import="javax.swing.plaf.synth.SynthTextAreaUI" %><%--
+<%@ page import="javax.swing.plaf.synth.SynthTextAreaUI" %>
+<%@ page import="com.sun.xml.internal.bind.v2.TODO" %><%--
   Created by IntelliJ IDEA.
   User: Tony.Jaa
   Date: 2017/6/7
@@ -23,6 +24,7 @@
     String password = request.getParameter("password");
     out.print(password);
 
+    //TODO 验证nicck，mobil的唯一性
     new Driver();
     java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql:///?user=root&password=system");
     String sql = "INSERT INTO db_javaee.user VALUE(NULL,?,?,?)";
@@ -31,12 +33,12 @@
     statement.setString(2,mobil);
     statement.setString(3, password);
     System.out.println(statement);
-    statement.executeUpdate();
+    statement.executeUpdate();//executeUpdate广义上的更新，包括insert，update，delete语句
 
     statement.close();
     connection.close();
 
-    response.sendRedirect("index.jsp");//跳到index.jsp页面
+    response.sendRedirect("index.jsp");// ?? 跳到index.jsp页面
 %>
 </body>
 </html>

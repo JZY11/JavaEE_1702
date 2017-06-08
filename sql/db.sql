@@ -5,9 +5,9 @@ DROP TABLE IF EXISTS db_javaee.user;
 CREATE TABLE db_javaee.user (
   id       INT AUTO_INCREMENT PRIMARY KEY
   COMMENT 'ID PK',
-  nick     VARCHAR(255) NOT NULL
+  nick     VARCHAR(255) NOT NULL UNIQUE
   COMMENT '昵称',
-  mobil    VARCHAR(255) NOT NULL
+  mobil    VARCHAR(255) NOT NULL UNIQUE
   COMMENT '手机',
   password VARCHAR(255) NOT NULL
   COMMENT '密码'
