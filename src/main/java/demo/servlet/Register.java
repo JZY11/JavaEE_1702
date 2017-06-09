@@ -31,7 +31,7 @@ public class Register extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("doPost...");
         String nick = req.getParameter("nick").trim();
-        String mobile = req.getParameter("mobil").trim();
+        String mobile = req.getParameter("mobile").trim();
         String password = req.getParameter("password").trim();
 
         if (nick.length() == 0 || mobile.length() == 0 || password.length() == 0) {
