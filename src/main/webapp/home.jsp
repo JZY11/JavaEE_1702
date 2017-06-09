@@ -11,6 +11,11 @@
     <title>Title</title>
 </head>
 <body>
+<%
+    if (session.getAttribute("nick") == null) {// 解决权限问题
+        response.sendRedirect("index.jsp");
+    }
+%>
 <h1>主页<%=session.getId()%></h1>
 <p><%=session.getAttribute("nick")%></p>
 <a href="second.jsp">第二页</a>

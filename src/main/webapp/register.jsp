@@ -40,10 +40,10 @@
     statement.setString(1,nick);
     ResultSet resultSet = statement.executeQuery();
     boolean isNickExist = resultSet.next();
-    String sqlMobile = "SELECT * FROM db_javaee.user WHERE mobile = ?";
+    String sqlMobile = "SELECT * FROM db_javaee.user WHERE mobil = ?";
     statement = connection.prepareStatement(sqlMobile);
     statement.setString(1, mobil);
-//    resultSet = statement.executeQuery();
+    resultSet = statement.executeQuery();
     boolean isMobileExist = resultSet.next();
 //    statement.executeUpdate();//executeUpdate广义上的更新，包括insert，update，delete语句
 
@@ -54,13 +54,13 @@
     } else if (isMobileExist) {
         request.setAttribute("message", "手机号已经存在");
         request.getRequestDispatcher("signup.jsp").forward(request, response);
-    } else {
+    } else {// 昵称和手机号都不存在，可正常注册
         String sql = "INSERT INTO db_javaee.user VALUE (NULL ,?,?,?)";
         statement = connection.prepareStatement(sql);
         statement.setString(1, nick);
         statement.setString(2, mobil);
         statement.setString(3, password);
-//        statement.executeUpdate();
+        statement.executeUpdate();
         response.sendRedirect("index.jsp");//重定向跳转到index.jsp页面
     }
     resultSet.close();

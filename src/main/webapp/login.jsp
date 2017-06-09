@@ -25,15 +25,15 @@
 </pre>
 <body>
 <%
-    String mobile = request.getParameter("mobil");//从表单中获取添加的值即获取表单参数
+    String mobil = request.getParameter("mobil");//从表单中获取添加的值即获取表单参数
     String password = request.getParameter("password");
-    out.println(mobile + "," + password);
+    out.println(mobil + "," + password);
 
     new Driver();//进行数据库驱动
     java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql:///?user=root&password=system");
     String sql = "SELECT * FROM db_javaee.user WHERE mobil=? AND password=?";
     PreparedStatement statement = connection.prepareStatement(sql);
-    statement.setString(1,mobile);
+    statement.setString(1,mobil);
     statement.setString(2,password);
     System.out.println(statement);
 //    statement.executeUpdate();
@@ -45,8 +45,8 @@
         System.out.println(resultSet.getString("nick"));
 //        request.setAttribute("nick", resultSet.getString("nick"));
         session.setAttribute("nick",resultSet.getString("nick"));
-//        response.sendRedirect("home.jsp");//Redirect：重定向  不能保存request范围内的属性
-        request.getRequestDispatcher("home.jsp").forward(request,response);// 转发到home.jsp页面  能保存request内的属性
+        response.sendRedirect("home.jsp");//Redirect：重定向  不能保存request范围内的属性 可用，因是sesscion属性，若为request属性则不可以
+//        request.getRequestDispatcher("home.jsp").forward(request,response);// 转发到home.jsp页面  能保存request内的属性
     }else {
         //failed
 //        response.sendRedirect("index.jsp"); // redirect 重定向 地址栏地址有变化   能保存request内的属性
