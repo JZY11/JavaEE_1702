@@ -7,12 +7,16 @@ CREATE TABLE db_javaee.user (
   COMMENT 'ID PK',
   nick     VARCHAR(255) NOT NULL UNIQUE
   COMMENT '昵称',
-  mobil    VARCHAR(255) NOT NULL UNIQUE
+  mobile    VARCHAR(255) NOT NULL UNIQUE
   COMMENT '手机',
   password VARCHAR(255) NOT NULL
-  COMMENT '密码'
+  COMMENT '密码',
+  bobbies VARCHAR(255) COMMENT '爱好',
+  cities VARCHAR(255) COMMENT '城市'
 )
   COMMENT '用户表';
+
+TRUNCATE TABLE db_javaee.user;
 
 SELECT *
 FROM db_javaee.user;

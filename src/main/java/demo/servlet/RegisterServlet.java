@@ -24,9 +24,10 @@ import java.util.Arrays;
  * 1. 接收请求
  * 2. 处理请求
  * 3. 返回响应
+ *
  */
 @WebServlet(urlPatterns = "/register")
-public class Register extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("doPost...");
