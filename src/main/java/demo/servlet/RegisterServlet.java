@@ -26,7 +26,7 @@ import java.util.Arrays;
  * 3. 返回响应
  *
  */
-@WebServlet(urlPatterns = "/register")
+//@WebServlet(urlPatterns = "/register")
 public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
