@@ -31,7 +31,11 @@ public class StudentServlet extends HttpServlet {
             return;
         }
         if ("queryAll".equals(action)) {
-            queryAll(req, resp);
+            try {
+                queryAll(req, resp);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -119,6 +123,103 @@ public class StudentServlet extends HttpServlet {
             e.printStackTrace();
         } finally {
             Db.close(resultSet, preparedStatement, (com.mysql.jdbc.Connection) connection); // ?
+        }
+    }
+
+    private void queryById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        int id = Integer.parseInt(req.getParameter("id"));
+
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        String sql = "SELECT * FROM db_javaee.student WHERE id = ?";
+
+        try {
+            if (connection != null) {
+                preparedStatement = connection.prepareStatement(sql);
+            } else {
+                req.setAttribute("message", "Error.");
+                req.getRequestDispatcher("index.jsp").forward(req, resp);
+                return;
+            }
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            Student student = new Student(
+                    resultSet.getInt("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("gender"),
+                    resultSet.getString("dob"));
+            req.getSession().setAttribute("student", student); // ?
+            resp.sendRedirect("edit.jsp");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Db.close(resultSet, preparedStatement, (com.mysql.jdbc.Connection) connection); // ?
+        }
+    }
+
+    private void modify(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        String name = req.getParameter("name");
+        String gender = req.getParameter("gender");
+        String dob = req.getParameter("dob");
+
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+
+        String sql = "UPDATE db_javaee.student SET name = ?, gender = ?, dob = ? WHERE id = ?";
+
+        try {
+            if (connection != null) {
+                preparedStatement = connection.prepareStatement(sql);
+            } else {
+                req.setAttribute("message", "Error.");
+                req.getRequestDispatcher("index.jsp").forward(req, resp);
+                return;
+            }
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, gender);
+            preparedStatement.setString(3, dob);
+            preparedStatement.setInt(4, id);
+
+            preparedStatement.executeUpdate();
+
+            resp.sendRedirect("student?action=queryAll");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Db.close(null, preparedStatement, (com.mysql.jdbc.Connection) connection);
+        }
+    }
+
+    private void remove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        int id = Integer.parseInt(req.getParameter("id"));
+
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+
+        String sql = "DELETE FROM db_javaee.student WHERE id = ?";
+
+        try {
+            if (connection != null) {
+                preparedStatement = connection.prepareStatement(sql);
+            } else {
+                req.setAttribute("message", "Error.");
+                req.getRequestDispatcher("index.jsp").forward(req, resp);
+                return;
+            }
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+
+            resp.sendRedirect("student?action=queryAll");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Db.close(null, preparedStatement, (com.mysql.jdbc.Connection) connection); // ?
         }
     }
 
