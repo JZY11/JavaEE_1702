@@ -1,5 +1,6 @@
 package demo.servlet;
 
+import demo.model.Student;
 import demo.util.Db;
 
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -102,7 +104,21 @@ public class StudentServlet extends HttpServlet {
                 return;
             }
             resultSet = preparedStatement.executeQuery();
-            List<Student>
+            List<Student> students = new ArrayList<>();
+            while(resultSet.next()){
+                Student student = new Student(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("gender"),
+                        resultSet.getString("dob"));
+                students.add(student);
+            }
+            req.getSession().setAttribute("students", students); // ?
+            resp.sendRedirect("index.jsp");
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Db.close(resultSet, preparedStatement, (com.mysql.jdbc.Connection) connection); // ?
         }
     }
 
