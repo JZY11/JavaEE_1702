@@ -13,6 +13,6 @@
 <body>
 <h1>第二页。。</h1>
 <p><%=session.getAttribute("nick")%></p>
-<a href="home.jsp">回到主页</a>
+<a href="index.jsp">回到主页</a>
 </body>
 </html>

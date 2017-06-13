@@ -85,7 +85,7 @@ public class UserAction extends HttpServlet {
                 statement.setString(4, Arrays.toString(hobbies));
                 statement.setString(5, Arrays.toString(cities));
                 statement.executeUpdate();
-                resp.sendRedirect("index.jsp");
+                resp.sendRedirect("default.jsp");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -107,7 +107,7 @@ public class UserAction extends HttpServlet {
                 statement = connection.prepareStatement(sql);
             } else {
                 req.setAttribute("message", "出现了一点情况...");
-                req.getRequestDispatcher("index.jsp").forward(req, resp);
+                req.getRequestDispatcher("default.jsp").forward(req, resp);
                 return;
             }
             statement.setString(1, mobile);
@@ -115,10 +115,10 @@ public class UserAction extends HttpServlet {
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 req.getSession().setAttribute("nick", resultSet.getString("nick"));
-                resp.sendRedirect("home.jsp");
+                resp.sendRedirect("index.jsp");
             } else {
                 req.setAttribute("message", "手机号或密码错误");
-                req.getRequestDispatcher("index.jsp").forward(req, resp);
+                req.getRequestDispatcher("default.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -134,7 +134,7 @@ public class UserAction extends HttpServlet {
 
     private void logout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.getSession().invalidate();
-        resp.sendRedirect("index.jsp");
+        resp.sendRedirect("default.jsp");
     }
 
     @Override

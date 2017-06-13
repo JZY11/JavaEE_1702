@@ -1,11 +1,16 @@
 package demo.servlet;
 
+import demo.util.Db;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  * Created by zhenya.1291813139.com
@@ -27,6 +32,22 @@ public class StudentServlet extends HttpServlet {
     }
 
     private void add(HttpServletRequest req, HttpServletResponse resp) {
+        String name = req.getParameter("name");
+        String gender = req.getParameter("gender");
+        String dob = req.getParameter("dob");
+
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+
+        String sql = "INSERT INTO db_javaee.student VALUE (NULL ,?,?,?)";
+
+        try {
+            if (connection != null) {
+                preparedStatement = connection.prepareStatement(sql);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
