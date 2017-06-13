@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by zhenya.1291813139.com
@@ -26,12 +28,32 @@ public class StudentServlet extends HttpServlet {
             add(req,resp);
             return;
         }
+        if ("queryAll".equals(action)) {
+            queryAll(req, resp);
+            return;
+        }
+
+        if ("queryById".equals(action)) {
+            queryById(req, resp);
+            return;
+        }
+
+        if ("modify".equals(action)) {
+            modify(req, resp);
+            return;
+        }
+
+        if ("remove".equals(action)) {
+            remove(req, resp);
+            return;
+        }
 
         req.setAttribute("message", "出了一点问题哦");
         req.getRequestDispatcher("index.sql").forward(req,resp);
     }
 
-    private void add(HttpServletRequest req, HttpServletResponse resp) {
+
+    private void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String gender = req.getParameter("gender");
         String dob = req.getParameter("dob");
@@ -44,9 +66,43 @@ public class StudentServlet extends HttpServlet {
         try {
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
+            }else {
+                req.setAttribute("message", "It's a error...");
+                req.getRequestDispatcher("index.jsp").forward(req, resp);
+                return;
             }
+
+            preparedStatement.setString(1,name);
+            preparedStatement.setString(2,gender);
+            preparedStatement.setString(3,dob);
+
+            preparedStatement.executeUpdate();
+
+            //TODO ???
+            resp.sendRedirect("student?action=queryAll");//???
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            Db.close(null,preparedStatement, (com.mysql.jdbc.Connection) connection);
+        }
+    }
+
+    private void queryAll(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        String sql = "";
+        try{
+            if (connection != null) {
+                preparedStatement = connection.prepareStatement(sql);
+            }else {
+                req.setAttribute("message", "It's a error...");
+                req.getRequestDispatcher("index.jsp").forward(req, resp);
+                return;
+            }
+            resultSet = preparedStatement.executeQuery();
+            List<Student>
         }
     }
 

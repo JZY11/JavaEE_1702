@@ -25,16 +25,16 @@ Ctrl + Option + R
     <input type="text" name="nick" placeholder="昵称"><br>
     <input type="text" name="mobile" placeholder="手机号"><br>
     <input type="password" name="password" placeholder="密码"><br>
-    hobbies： <!--复选框 -->
-    <input type="checkbox" name="hobbies" value="TV">TV
-    <input type="checkbox" name="hobbies" value="Movie">Movie
-    <input type="checkbox" name="hobbies" value="Game">Game<br>
-    cities：<!--下拉列表 -->
-    <select name="cities" multiple>   <!--multiple(下拉列表可多选) -->
-        <option value="Beijing">Beijing</option>
-        <option value="Shanghai">Shanghai</option>
-        <option value="Shenzhen">Shenzhen</option>
-    </select><br>
+    <%--hobbies： <!--复选框 -->--%>
+    <%--<input type="checkbox" name="hobbies" value="TV">TV--%>
+    <%--<input type="checkbox" name="hobbies" value="Movie">Movie--%>
+    <%--<input type="checkbox" name="hobbies" value="Game">Game<br>--%>
+    <%--cities：<!--下拉列表 -->--%>
+    <%--<select name="cities" multiple>   <!--multiple(下拉列表可多选) -->--%>
+        <%--<option value="Beijing">Beijing</option>--%>
+        <%--<option value="Shanghai">Shanghai</option>--%>
+        <%--<option value="Shenzhen">Shenzhen</option>--%>
+    <%--</select><br>--%>
     <input type="submit" value="注册">
 </form>
 <%
