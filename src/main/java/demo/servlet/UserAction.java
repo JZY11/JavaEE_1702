@@ -25,15 +25,21 @@ public class UserAction extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
 
-        if (action.equals("register")) {
+        if ("register".equals(action)) { // action.equals NPE
             register(req, resp);
+            return;
         }
-        if (action.equals("login")) {
+        if ("login".equals(action)) {
             login(req, resp);
+            return;
         }
-        if (action.equals("logout")) {
+        if ("logout".equals(action)) {
             logout(req, resp);
+            return;
         }
+
+        req.setAttribute("message", "出现了一点问题。。。");
+        req.getRequestDispatcher("default.jsp").forward(req, resp);
     }
 
 
@@ -47,8 +53,8 @@ public class UserAction extends HttpServlet {
             req.getRequestDispatcher("signup.jsp").forward(req, resp);
         }
 
-        String[] hobbies = req.getParameterValues("hobbies");
-        String[] cities = req.getParameterValues("cities");
+//        String[] hobbies = req.getParameterValues("hobbies");
+//        String[] cities = req.getParameterValues("cities");
 
         Connection connection = Db.getConnection();
         PreparedStatement statement = null;
@@ -77,13 +83,13 @@ public class UserAction extends HttpServlet {
                 req.setAttribute("message", "手机号已经存在");
                 req.getRequestDispatcher("signup.jsp").forward(req, resp);
             } else {
-                String sql = "INSERT INTO db_javaee.user VALUE (NULL ,?,?,?,?,?)";
+                String sql = "INSERT INTO db_javaee.user VALUE (NULL ,?,?,?)";
                 statement = connection.prepareStatement(sql);
                 statement.setString(1, nick);
                 statement.setString(2, mobile);
                 statement.setString(3, password);
-                statement.setString(4, Arrays.toString(hobbies));
-                statement.setString(5, Arrays.toString(cities));
+//                statement.setString(4, Arrays.toString(hobbies));
+//                statement.setString(5, Arrays.toString(cities));
                 statement.executeUpdate();
                 resp.sendRedirect("default.jsp");
             }
@@ -94,7 +100,7 @@ public class UserAction extends HttpServlet {
         }
     }
 
-    private void login(HttpServletRequest req, HttpServletResponse resp) {
+    private void login(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String mobile = req.getParameter("mobile");
         String password = req.getParameter("password");
 
@@ -115,16 +121,13 @@ public class UserAction extends HttpServlet {
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 req.getSession().setAttribute("nick", resultSet.getString("nick"));
-                resp.sendRedirect("index.jsp");
+                //TODO ???
+                resp.sendRedirect("student?action=queryAll");// ??
             } else {
                 req.setAttribute("message", "手机号或密码错误");
                 req.getRequestDispatcher("default.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             Db.close(resultSet, statement, (com.mysql.jdbc.Connection) connection);
