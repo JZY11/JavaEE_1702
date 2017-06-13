@@ -98,7 +98,7 @@ public class StudentServlet extends HttpServlet {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
-        String sql = "";
+        String sql = "SELECT * FROM db_javaee.student ORDER BY id";
         try{
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
