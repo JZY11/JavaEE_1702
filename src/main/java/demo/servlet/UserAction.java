@@ -44,7 +44,7 @@ public class UserAction extends HttpServlet {
 
 
     private void register(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String nick = req.getParameter("nick").trim();
+        String nick = req.getParameter("nick").trim();// 获取表单信息
         String mobile = req.getParameter("mobile").trim();
         String password = req.getParameter("password");
 

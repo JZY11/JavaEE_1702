@@ -12,7 +12,7 @@
     <title>Title</title>
     <script>
         function del() {
-            return confirm('DEL?');
+            return confirm('是否确定要删除');
         }
     </script>
 </head>

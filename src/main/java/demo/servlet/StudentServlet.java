@@ -85,7 +85,7 @@ public class StudentServlet extends HttpServlet {
             preparedStatement.executeUpdate();
 
             //TODO ???
-            resp.sendRedirect("student?action=queryAll");//???
+            resp.sendRedirect("student?action=queryAll");//???不跳回index.jsp页面，而是发起一个新的请求，queryAll查询到最新的结果后再回到index.jsp页面
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
@@ -105,7 +105,7 @@ public class StudentServlet extends HttpServlet {
             }else {
                 req.setAttribute("message", "It's a error...");
                 req.getRequestDispatcher("index.jsp").forward(req, resp);
-                return;
+                return;// ***
             }
             resultSet = preparedStatement.executeQuery();
             List<Student> students = new ArrayList<>();
@@ -144,9 +144,9 @@ public class StudentServlet extends HttpServlet {
                 req.getRequestDispatcher("index.jsp").forward(req, resp);
                 return;
             }
-            preparedStatement.setInt(1, id);
-            resultSet = preparedStatement.executeQuery();
-            resultSet.next();
+            preparedStatement.setInt(1, id);//设置未定义参数
+            resultSet = preparedStatement.executeQuery();// 执行查询操作
+            resultSet.next();// 判断是否有下一条信息
             Student student = new Student(
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
@@ -213,9 +213,9 @@ public class StudentServlet extends HttpServlet {
                 return;
             }
             preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();// 执行一次更新操作
 
-            resp.sendRedirect("student?action=queryAll");
+            resp.sendRedirect("student?action=queryAll");// 在发起一次请求
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
