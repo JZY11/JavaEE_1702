@@ -11,13 +11,13 @@
     <title>index page</title>
 </head>
 <body>
-<h1>首页<%=session.getId()%>
+<h1 style="text-align: center">首页<%=session.getId()%>
 </h1><!-- sessionId,session开始的地方，网站的第一个jsp动态页面 -->
-<form action="user" method="post"><!--method 默认的为get,改为post更保密，在地址栏里不会看到自己的电话和密码了-->
+<form action="user" method="post" style="text-align: center"><!--method 默认的为get,改为post更保密，在地址栏里不会看到自己的电话和密码了-->
     <input type="hidden" name="action" value="login">
     <input type="text" name="mobile" placeholder="手机号"><br><!-- placeholder占位栏-->
     <input type="password" name="password" placeholder="密码"><br>
-    <input type="submit" value="登录">
+    <input type="submit" value="登录" style="color: green">
 </form>
 <%--<p><%=request.getAttribute("message")%></p>--%>
 
@@ -32,6 +32,6 @@
     %>
     <%-- 判断属性是否有对应的值 --%>
 </p>
-<a href="signup.jsp">注册</a>
+<a href="signup.jsp" style="margin-left: 750px;font-size: 15px;color: red">注册</a>
 </body>
 </html>

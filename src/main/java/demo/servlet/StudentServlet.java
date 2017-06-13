@@ -107,17 +107,17 @@ public class StudentServlet extends HttpServlet {
                 req.getRequestDispatcher("index.jsp").forward(req, resp);
                 return;// ***
             }
-            resultSet = preparedStatement.executeQuery();
-            List<Student> students = new ArrayList<>();
+            resultSet = preparedStatement.executeQuery();// 结果集在jsp页面中显示不出来  module类
+            List<Student> students = new ArrayList<>();// ???  利用集合类
             while(resultSet.next()){
-                Student student = new Student(
+                Student student = new Student(// 做一module类People的实例对象，调用有参构造方法
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
                         resultSet.getString("gender"),
                         resultSet.getString("dob"));
-                students.add(student);
+                students.add(student);// 存入集合类
             }
-            req.getSession().setAttribute("students", students); // ?
+            req.getSession().setAttribute("students", students); // 在session属性范围范围内设置属性，value=students
             resp.sendRedirect("index.jsp");
         }catch (SQLException e) {
             e.printStackTrace();
@@ -146,13 +146,13 @@ public class StudentServlet extends HttpServlet {
             }
             preparedStatement.setInt(1, id);//设置未定义参数
             resultSet = preparedStatement.executeQuery();// 执行查询操作
-            resultSet.next();// 判断是否有下一条信息
+            resultSet.next();// 判断是否有下一条信息(只有一条信息)
             Student student = new Student(
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
                     resultSet.getString("gender"),
                     resultSet.getString("dob"));
-            req.getSession().setAttribute("student", student); // ?
+            req.getSession().setAttribute("student", student); // 只有一条数据（value=student）
             resp.sendRedirect("edit.jsp");
         } catch (SQLException e) {
             e.printStackTrace();

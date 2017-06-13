@@ -34,29 +34,33 @@
 <%--<%=application.getAttribute("app-key")%>--%>
 <p><a href="user?action=logout">注销</a></p>
 <hr>
-<form action="student" method="post">
-    <input type="hidden" name="action" value="add">
-    <input type="text" name="name" value="姓名"><br>
-    <input type="text" name="gender" value="性别"><br>
-    <input type="date" name="dob" value="出生日期"><br>
-    <input type="submit" value="添加">
+<form action="student" method="post" style="text-align: center">
+    <%--<div style="width: 100%;text-align: center">--%>
+        <input type="hidden" name="action" value="add">
+        <input type="text" name="name" value="姓名"><br>
+        <input type="text" name="gender" value="性别"><br>
+        <input type="date" name="dob" value="出生日期"><br>
+        <input type="submit" value="添加">
+    <%--</div>--%>
 </form>
 <hr>
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>姓名</th>
-        <th>性别</th>
-        <th>出生日期</th>
-        <th colspan="2">操作</th>
-    </tr>
-    <%
-        List<Student> resultSet = (List<Student>) session.getAttribute("students");
-        for (Student student : resultSet) {
-            out.print("<tr>" + "<td>" + student.getId() + "</td>" + "<td>" + student.getName() + "</td>" + "<td>" + student.getGender() + "</td>" + "<td>" + student.getDob() + "<td><a href='student?action=queryById&id=" + student.getId() + "'>编辑</a></td>" + "<td><a href='student?action=remove&id=" + student.getId() + "' onclick='return del()'>删除</a></td>" + "</tr>");
-        }
-    %>
-</table>
+<%--<div style="width: 100%;text-align: center">--%>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>出生日期</th>
+            <th colspan="2">操作</th>
+        </tr>
+        <%
+            List<Student> resultSet = (List<Student>) session.getAttribute("students");
+            for (Student student : resultSet) {
+                out.print("<tr>" + "<td>" + student.getId() + "</td>" + "<td>" + student.getName() + "</td>" + "<td>" + student.getGender() + "</td>" + "<td>" + student.getDob() + "<td><a href='student?action=queryById&id=" + student.getId() + "'>编辑</a></td>" + "<td><a href='student?action=remove&id=" + student.getId() + "' onclick='return del()'>删除</a></td>" + "</tr>");
+            }
+        %>
+    </table>
+<%--</div>--%>
 <hr>
 <%
     String message = (String) request.getAttribute("message");
