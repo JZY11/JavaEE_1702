@@ -37,11 +37,14 @@ Ctrl + Option + R
     <%--</select><br>--%>
     <input type="submit" value="注册">
 </form>
-<%
-    String message = (String) request.getAttribute("message");
-    if (message != null) {
-        out.print(message);
-    }
-%>
+
+${requestScope.message}
+
+<%--<%--%>
+    <%--String message = (String) request.getAttribute("message");--%>
+    <%--if (message != null) {--%>
+        <%--out.print(message);--%>
+    <%--}--%>
+<%--%>--%>
 </body>
 </html>
