@@ -19,6 +19,11 @@
     </script>
 </head>
 <body>
+
+<c:if test="${sessionScope.nick eq null}">
+    <c:redirect url = "default.jsp"/>
+</c:if>
+
 <%
     if (session.getAttribute("nick") == null) {// 解决权限问题
         response.sendRedirect("default.jsp");
