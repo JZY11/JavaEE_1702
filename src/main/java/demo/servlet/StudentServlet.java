@@ -2,6 +2,7 @@ package demo.servlet;
 
 import demo.model.Student;
 import demo.util.Db;
+import demo.util.Error;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -59,7 +60,7 @@ public class StudentServlet extends HttpServlet {
         }
 
         req.setAttribute("message", "出了一点问题哦");
-        req.getRequestDispatcher("index.sql").forward(req, resp);
+        req.getRequestDispatcher("default.sql").forward(req, resp);
     }
 
 
@@ -77,8 +78,7 @@ public class StudentServlet extends HttpServlet {
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
             } else {
-                req.setAttribute("message", "It's a error...");
-                req.getRequestDispatcher("index.jsp").forward(req, resp);
+                req.setAttribute("message", "Error...");
                 return;
             }
 
@@ -107,9 +107,9 @@ public class StudentServlet extends HttpServlet {
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
             } else {
-                req.setAttribute("message", "It's a error...");
+                req.setAttribute("message", "Error...");
                 req.getRequestDispatcher("index.jsp").forward(req, resp);
-                return;// ***
+                return;
             }
             resultSet = preparedStatement.executeQuery();// 结果集在jsp页面中显示不出来  module类
             List<Student> students = new ArrayList<>();// ???  利用集合类
@@ -144,8 +144,7 @@ public class StudentServlet extends HttpServlet {
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
             } else {
-                req.setAttribute("message", "Error.");
-                req.getRequestDispatcher("index.jsp").forward(req, resp);
+                Error.showErrorMessage(req, resp);
                 return;
             }
             preparedStatement.setInt(1, id);//设置未定义参数
@@ -180,8 +179,7 @@ public class StudentServlet extends HttpServlet {
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
             } else {
-                req.setAttribute("message", "Error.");
-                req.getRequestDispatcher("index.jsp").forward(req, resp);
+                Error.showErrorMessage(req, resp);
                 return;
             }
             preparedStatement.setString(1, name);
@@ -199,26 +197,21 @@ public class StudentServlet extends HttpServlet {
         }
     }
 
-    private void removeById(int id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException ){
+    private void removeById(int id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection connection = Db.getConnection();
         PreparedStatement preparedStatement = null;
 
-        String sql = "";
+        String sql = "DELETE FROM db_javaee.student WHERE id = ?";
 
         try{
             if(connection != null){
-                if(isConnected(connection,req,resp)){
                     preparedStatement = connection.prepareStatement(sql);
                 }else{
-                    req.setAttribute("message","Error...");
-                    req.getRequestDispatcher("index.jsp").forward(req,resp);
+                   Error.showErrorMessage(req, resp);
                     return;
                 }
                 preparedStatement.setInt(1,id);
                 preparedStatement.executeUpdate();
-
-                resp.sendRedirect("student?action=quryAll");
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
@@ -239,6 +232,11 @@ public class StudentServlet extends HttpServlet {
 
     private void batchRemove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String[] ids = req.getParameterValues("ids");
+        if (ids == null) {
+            req.setAttribute("message","有问题");
+            req.getRequestDispatcher("index.jsp").forward(req,resp);
+            return;
+        }
         for (String idString : ids) {
             int id = Integer.parseInt(idString);
             removeById(id,req,resp);
@@ -246,15 +244,15 @@ public class StudentServlet extends HttpServlet {
         resp.sendRedirect("student?action=quryAll");
     }
 
-    private boolean isConnected(Connection connection, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(connection == null){
-
-        req.setAttribute("message", "Error...");
-        req.getRequestDispatcher("default.jsp").forward(req, resp);
-        return false;
-        }
-        return true;
-    }
+//    private boolean isConnected(Connection connection, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        if(connection == null){
+//
+//        req.setAttribute("message", "Error...");
+//        req.getRequestDispatcher("default.jsp").forward(req, resp);
+//        return false;
+//        }
+//        return true;
+//    }
 
 
     @Override

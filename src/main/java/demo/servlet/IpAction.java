@@ -1,14 +1,13 @@
 package demo.servlet;
 
 import demo.util.Db;
-import demo.util.Error;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.PublicKey;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +18,7 @@ import java.sql.SQLException;
  * on 2017/6/14.
  * Java EE_1702.
  */
+@WebServlet(urlPatterns = "/ip")
 public class IpAction extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,12 +27,15 @@ public class IpAction extends HttpServlet {
         if (ip.length() == 0) {
             ip = req.getRemoteAddr();
         }
-        req.getSession().setAttribute("geo",getGeo(ip));
-        req.getRequestDispatcher("ip.jsp").forward(req,resp);
+        req.getSession().setAttribute("geo", getGeo(ip));
+        req.getRequestDispatcher("ip.jsp").forward(req, resp);
+    }
 
+    public static String getGeo(String ip) {
         Connection connection = Db.getConnection();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+
 
         String sql = "SELECT geo\n" +
                 "FROM db_1712.ip\n" +
@@ -41,24 +44,21 @@ public class IpAction extends HttpServlet {
         try {
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
-            }else {
-                Error.showErrorMessage(req,resp);
+            } else {
+//                Error.showErrorMessage(req, resp);
                 return null;
             }
-            preparedStatement.setString(1,ip);
+            preparedStatement.setString(1, ip);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
 
             return resultSet.getString("geo");
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            Db.close(resultSet,preparedStatement, (com.mysql.jdbc.Connection) connection);
+        } finally {
+            Db.close(resultSet, preparedStatement, (com.mysql.jdbc.Connection) connection);
         }
-    }
-    public static String getGeo(String ip){
-        Connection connection = Db.getConnection();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        return null;
     }
 }
+
