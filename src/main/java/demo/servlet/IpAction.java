@@ -1,6 +1,7 @@
 package demo.servlet;
 
 import demo.util.Db;
+import demo.util.Error;
 
 import javax.naming.ldap.PagedResultsControl;
 import javax.servlet.ServletException;
@@ -49,7 +50,7 @@ public class IpAction extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            Db.close(resultSet,preparedStatement,connection);
+            Db.close(resultSet,preparedStatement, (com.mysql.jdbc.Connection) connection);
         }
     }
 }
