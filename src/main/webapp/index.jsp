@@ -12,9 +12,25 @@
 <html>
 <head>
     <title>Title</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        th,
+        td {
+            border: 1px solid #333;
+        }
+    </style>
     <script>
         function del() {
             return confirm('是否确定要删除');
+        }
+        function selectAll() {
+            var cb = document.getElementById('cb');
+            var items = document.getElementsByClassName('to_be_delete');
+            for(var i = 0; i <items.length;i++){
+                items[i].checked = cb.checked
+            }
         }
     </script>
 </head>
@@ -24,11 +40,13 @@
     <c:redirect url="default.jsp"/>
 </c:if>
 
-<%
-    if (session.getAttribute("nick") == null) {// 解决权限问题
-        response.sendRedirect("default.jsp");
-    }
-%>
+${sessionScope.nick}
+
+<%--<%--%>
+    <%--if (session.getAttribute("nick") == null) {// 解决权限问题--%>
+        <%--response.sendRedirect("default.jsp");--%>
+    <%--}--%>
+<%--%>--%>
 <h1>主页<%=session.getId()%>
 </h1>
 <%--<p><%=session.getAttribute("nick")%></p>--%>
@@ -52,6 +70,8 @@
 </form>
 <hr>
 <%--<div style="width: 100%;text-align: center">--%>
+<form action="student" method="post">
+    <input type="hidden" name="action" value="batchRemove">
 <table border="1">
 
     <c:choose>
@@ -60,7 +80,7 @@
         </c:when>
         <c:otherwise>
             <tr>
-                <th>ID</th>
+                <th><input id="cb" type="checkbox" onclick="selectAll()">序号</th>
                 <th>姓名</th>
                 <th>性别</th>
                 <th>出生日期</th>
@@ -71,7 +91,7 @@
 
     <c:forEach var="student" items="${sessionScope.students}" varStatus="vs">
         <tr>
-            <td>${vs.count}</td>
+            <td><input class="to_be_delete" type="checkbox" name="ids" value="${student.id}">${vs.count}</td>
             <td>${student.name}</td>
             <td>${student.gender}</td>
             <td>${student.dob}</td>
@@ -90,6 +110,10 @@
 
     <%--%>--%>
 </table>
+    <c:if test="${fn:length(sessionScope.student) ne 0}">
+        <input type="submit" value="删除">
+    </c:if>
+</form>
 <%--</div>--%>
 <hr>
 

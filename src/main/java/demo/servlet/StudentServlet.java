@@ -27,7 +27,7 @@ public class StudentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if ("add".equals(action)) {
-            add(req,resp);
+            add(req, resp);
             return;
         }
         if ("queryAll".equals(action)) {
@@ -53,9 +53,13 @@ public class StudentServlet extends HttpServlet {
             remove(req, resp);
             return;
         }
+        if ("batchRemove".equals(action)) {
+            batchRemove(req, resp);
+            return;
+        }
 
         req.setAttribute("message", "出了一点问题哦");
-        req.getRequestDispatcher("index.sql").forward(req,resp);
+        req.getRequestDispatcher("index.sql").forward(req, resp);
     }
 
 
@@ -72,15 +76,15 @@ public class StudentServlet extends HttpServlet {
         try {
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
-            }else {
+            } else {
                 req.setAttribute("message", "It's a error...");
                 req.getRequestDispatcher("index.jsp").forward(req, resp);
                 return;
             }
 
-            preparedStatement.setString(1,name);
-            preparedStatement.setString(2,gender);
-            preparedStatement.setString(3,dob);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, gender);
+            preparedStatement.setString(3, dob);
 
             preparedStatement.executeUpdate();
 
@@ -88,8 +92,8 @@ public class StudentServlet extends HttpServlet {
             resp.sendRedirect("student?action=queryAll");//???不跳回index.jsp页面，而是发起一个新的请求，queryAll查询到最新的结果后再回到index.jsp页面
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            Db.close(null,preparedStatement, (com.mysql.jdbc.Connection) connection);
+        } finally {
+            Db.close(null, preparedStatement, (com.mysql.jdbc.Connection) connection);
         }
     }
 
@@ -99,17 +103,17 @@ public class StudentServlet extends HttpServlet {
         ResultSet resultSet = null;
 
         String sql = "SELECT * FROM db_javaee.student ORDER BY id";
-        try{
+        try {
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
-            }else {
+            } else {
                 req.setAttribute("message", "It's a error...");
                 req.getRequestDispatcher("index.jsp").forward(req, resp);
                 return;// ***
             }
             resultSet = preparedStatement.executeQuery();// 结果集在jsp页面中显示不出来  module类
             List<Student> students = new ArrayList<>();// ???  利用集合类
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 Student student = new Student(// 做一module类People的实例对象，调用有参构造方法
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
@@ -119,7 +123,7 @@ public class StudentServlet extends HttpServlet {
             }
             req.getSession().setAttribute("students", students); // 在session属性范围范围内设置属性，value=students
             resp.sendRedirect("index.jsp");
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             Db.close(resultSet, preparedStatement, (com.mysql.jdbc.Connection) connection); // ?
@@ -195,36 +199,66 @@ public class StudentServlet extends HttpServlet {
         }
     }
 
+    private void removeById(int id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException ){
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+
+        String sql = "";
+
+        try{
+            if(connection != null){
+                if(isConnected(connection,req,resp)){
+                    preparedStatement = connection.prepareStatement(sql);
+                }else{
+                    req.setAttribute("message","Error...");
+                    req.getRequestDispatcher("index.jsp").forward(req,resp);
+                    return;
+                }
+                preparedStatement.setInt(1,id);
+                preparedStatement.executeUpdate();
+
+                resp.sendRedirect("student?action=quryAll");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Db.close(null,preparedStatement, (com.mysql.jdbc.Connection) connection);
+        }
+
+    }
+
     private void remove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         int id = Integer.parseInt(req.getParameter("id"));
 
-        Connection connection = Db.getConnection();
-        PreparedStatement preparedStatement = null;
+        removeById(id,req,resp);
+        resp.sendRedirect("student?action=quryAll");
 
-        String sql = "DELETE FROM db_javaee.student WHERE id = ?";
-
-        try {
-            if (connection != null) {
-                preparedStatement = connection.prepareStatement(sql);
-            } else {
-                req.setAttribute("message", "Error.");
-                req.getRequestDispatcher("index.jsp").forward(req, resp);
-                return;
-            }
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();// 执行一次更新操作
-
-            resp.sendRedirect("student?action=queryAll");// 在发起一次请求
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            Db.close(null, preparedStatement, (com.mysql.jdbc.Connection) connection); // ?
-        }
     }
+
+
+    private void batchRemove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String[] ids = req.getParameterValues("ids");
+        for (String idString : ids) {
+            int id = Integer.parseInt(idString);
+            removeById(id,req,resp);
+        }
+        resp.sendRedirect("student?action=quryAll");
+    }
+
+    private boolean isConnected(Connection connection, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(connection == null){
+
+        req.setAttribute("message", "Error...");
+        req.getRequestDispatcher("default.jsp").forward(req, resp);
+        return false;
+        }
+        return true;
+    }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doPost(req,resp);
+        doPost(req, resp);
     }
 }
