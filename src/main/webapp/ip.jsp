@@ -11,6 +11,10 @@
     <title>Title</title>
 </head>
 <body>
-
+<form action="ip" method="post">
+    <input type="text" name = "ip">
+    <input type="submit" value="查询">
+</form>
+${sessionScope.geo}
 </body>
 </html>
