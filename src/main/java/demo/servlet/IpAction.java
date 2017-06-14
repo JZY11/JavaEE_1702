@@ -3,13 +3,12 @@ package demo.servlet;
 import demo.util.Db;
 import demo.util.Error;
 
-import javax.naming.ldap.PagedResultsControl;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.DataBuffer;
 import java.io.IOException;
+import java.security.PublicKey;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +24,12 @@ public class IpAction extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String ip = req.getParameter("ip").trim();
 
+        if (ip.length() == 0) {
+            ip = req.getRemoteAddr();
+        }
+        req.getSession().setAttribute("geo",getGeo(ip));
+        req.getRequestDispatcher("ip.jsp").forward(req,resp);
+
         Connection connection = Db.getConnection();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -38,19 +43,22 @@ public class IpAction extends HttpServlet {
                 preparedStatement = connection.prepareStatement(sql);
             }else {
                 Error.showErrorMessage(req,resp);
-                return;
+                return null;
             }
             preparedStatement.setString(1,ip);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
 
-            String geo = resultSet.getString("geo");
-            req.getSession().setAttribute("geo",geo);
-            resp.sendRedirect("ip.jsp");
+            return resultSet.getString("geo");
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
             Db.close(resultSet,preparedStatement, (com.mysql.jdbc.Connection) connection);
         }
+    }
+    public static String getGeo(String ip){
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
     }
 }

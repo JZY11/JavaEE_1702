@@ -1,4 +1,4 @@
-<%--
+<%@ page import="demo.servlet.IpAction" %><%--
   Created by IntelliJ IDEA.
   User: Tony.Jaa
   Date: 2017/6/14
@@ -10,11 +10,18 @@
 <head>
     <title>Title</title>
 </head>
-<body>
-<form action="ip" method="post">
+<body onload="ip()">
+<form id = "form"action="ip" method="post">
     <input type="text" name = "ip">
     <input type="submit" value="查询">
 </form>
 ${sessionScope.geo}
+<%
+    if (session.getAttribute("geo") == null) {
+        String ip = request.getRemoteAddr();
+        out.print(ip + "<br>");
+        out.print(IpAction.getGeo(ip));
+    }
+%>
 </body>
 </html>
