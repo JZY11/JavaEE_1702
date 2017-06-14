@@ -24,13 +24,15 @@
 
 <%--<%=(request.getAttribute("message") != null) ? request.getAttribute("message") : ""%>--%>
 <p>
-    <%
-        String message = (String) request.getAttribute("message");//取得message这一消息
-        if (message != null) {//解决登录页面有null的问题，做以判断就好
-            out.print(message);
-        }
-    %>
+    ${requestScope.message}
+    <%--<%--%>
+        <%--String message = (String) request.getAttribute("message");//取得message这一消息--%>
+        <%--if (message != null) {//解决登录页面有null的问题，做以判断就好--%>
+            <%--out.print(message);--%>
+        <%--}--%>
+    <%--%>--%>
     <%-- 判断属性是否有对应的值 --%>
+
 </p>
 <a href="signup.jsp" style="margin-left: 750px;font-size: 15px;color: red">注册</a>
 </body>
