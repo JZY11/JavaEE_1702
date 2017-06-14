@@ -21,7 +21,7 @@
 <body>
 
 <c:if test="${sessionScope.nick eq null}">
-    <c:redirect url = "default.jsp"/>
+    <c:redirect url="default.jsp"/>
 </c:if>
 
 <%
@@ -66,7 +66,6 @@
                 <th>出生日期</th>
                 <th colspan="2">操作</th>
             </tr>
-
         </c:otherwise>
     </c:choose>
 
@@ -81,13 +80,13 @@
         </tr>
     </c:forEach>
 
-    
+
     <%--<%--%>
 
-                <%--List<Student> resultSet = (List<Student>) session.getAttribute("students");--%>
-                <%--for (Student student : resultSet) {--%>
-                    <%--out.print("<tr>" + "<td>" + student.getId() + "</td>" + "<td>" + student.getName() + "</td>" + "<td>" + student.getGender() + "</td>" + "<td>" + student.getDob() + "<td><a href='student?action=queryById&id=" + student.getId() + "'>编辑</a></td>" + "<td><a href='student?action=remove&id=" + student.getId() + "' onclick='return del()'>删除</a></td>" + "</tr>");--%>
-                <%--}--%>
+    <%--List<Student> resultSet = (List<Student>) session.getAttribute("students");--%>
+    <%--for (Student student : resultSet) {--%>
+    <%--out.print("<tr>" + "<td>" + student.getId() + "</td>" + "<td>" + student.getName() + "</td>" + "<td>" + student.getGender() + "</td>" + "<td>" + student.getDob() + "<td><a href='student?action=queryById&id=" + student.getId() + "'>编辑</a></td>" + "<td><a href='student?action=remove&id=" + student.getId() + "' onclick='return del()'>删除</a></td>" + "</tr>");--%>
+    <%--}--%>
 
     <%--%>--%>
 </table>
