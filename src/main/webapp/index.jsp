@@ -110,9 +110,8 @@ ${sessionScope.nick}
 
     <%--%>--%>
 </table>
-    <c:if test="${fn:length(sessionScope.student) ne 0}">
         <input type="submit" value="删除">
-    </c:if>
+
 </form>
 <%--</div>--%>
 <hr>

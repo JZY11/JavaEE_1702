@@ -149,13 +149,13 @@ public class StudentServlet extends HttpServlet {
             }
             preparedStatement.setInt(1, id);//设置未定义参数
             resultSet = preparedStatement.executeQuery();// 执行查询操作
-            resultSet.next();// 判断是否有下一条信息(只有一条信息)
-            Student student = new Student(
+            resultSet.next();// 直接定位到第一条记录
+            Student student = new Student(// 将这条记录封装为模型类的实例(参数为取得的所有列)
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
                     resultSet.getString("gender"),
                     resultSet.getString("dob"));
-            req.getSession().setAttribute("student", student); // 只有一条数据（value=student）
+            req.getSession().setAttribute("student", student); // 只有一条数据(一个学生的一条数据)（value=student）
             resp.sendRedirect("edit.jsp");
         } catch (SQLException e) {
             e.printStackTrace();
