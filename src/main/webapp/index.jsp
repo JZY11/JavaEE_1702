@@ -16,6 +16,7 @@
         table {
             border-collapse: collapse;
         }
+
         th,
         td {
             border: 1px solid #333;
@@ -28,7 +29,7 @@
         function selectAll() {
             var cb = document.getElementById('cb');
             var items = document.getElementsByClassName('to_be_delete');
-            for(var i = 0; i <items.length;i++){
+            for (var i = 0; i < items.length; i++) {
                 items[i].checked = cb.checked
             }
         }
@@ -43,9 +44,9 @@
 ${sessionScope.nick}
 
 <%--<%--%>
-    <%--if (session.getAttribute("nick") == null) {// 解决权限问题--%>
-        <%--response.sendRedirect("default.jsp");--%>
-    <%--}--%>
+<%--if (session.getAttribute("nick") == null) {// 解决权限问题--%>
+<%--response.sendRedirect("default.jsp");--%>
+<%--}--%>
 <%--%>--%>
 <h1>主页<%=session.getId()%>
 </h1>
@@ -72,45 +73,48 @@ ${sessionScope.nick}
 <%--<div style="width: 100%;text-align: center">--%>
 <form action="student" method="post">
     <input type="hidden" name="action" value="batchRemove">
-<table border="1">
+    <table border="1">
 
-    <c:choose>
-        <c:when test="${fn:length(sessionScope.students) eq 0}">
-            当前没有记录
-        </c:when>
-        <c:otherwise>
+        <c:choose>
+            <c:when test="${fn:length(sessionScope.students) eq 0}">
+                当前没有记录
+            </c:when>
+            <c:otherwise>
+                <tr>
+                    <th><input id="cb" type="checkbox" onclick="selectAll()">序号</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>出生日期</th>
+                    <th colspan="2">操作</th>
+                </tr>
+            </c:otherwise>
+        </c:choose>
+
+        <c:forEach var="student" items="${sessionScope.students}" varStatus="vs">
             <tr>
-                <th><input id="cb" type="checkbox" onclick="selectAll()">序号</th>
-                <th>姓名</th>
-                <th>性别</th>
-                <th>出生日期</th>
-                <th colspan="2">操作</th>
+                <td><input class="to_be_delete" type="checkbox" name="ids" value="${student.id}">${vs.count}</td>
+                <td>${student.name}</td>
+                <td>${student.gender}</td>
+                <td>${student.dob}</td>
+                <td><a href="student?action=queryById&id=${student.id}">编辑</a></td>
+                <td><a href="student?action=remove&id=${student.id}" onclick="return del()">删除</a></td>
             </tr>
-        </c:otherwise>
-    </c:choose>
-
-    <c:forEach var="student" items="${sessionScope.students}" varStatus="vs">
-        <tr>
-            <td><input class="to_be_delete" type="checkbox" name="ids" value="${student.id}">${vs.count}</td>
-            <td>${student.name}</td>
-            <td>${student.gender}</td>
-            <td>${student.dob}</td>
-            <td><a href="student?action=queryById&id=${student.id}">编辑</a></td>
-            <td><a href="student?action=remove&id=${student.id}" onclick="return del()">删除</a></td>
-        </tr>
-    </c:forEach>
+        </c:forEach>
 
 
-    <%--<%--%>
+        <%--<%--%>
 
-    <%--List<Student> resultSet = (List<Student>) session.getAttribute("students");--%>
-    <%--for (Student student : resultSet) {--%>
-    <%--out.print("<tr>" + "<td>" + student.getId() + "</td>" + "<td>" + student.getName() + "</td>" + "<td>" + student.getGender() + "</td>" + "<td>" + student.getDob() + "<td><a href='student?action=queryById&id=" + student.getId() + "'>编辑</a></td>" + "<td><a href='student?action=remove&id=" + student.getId() + "' onclick='return del()'>删除</a></td>" + "</tr>");--%>
-    <%--}--%>
+        <%--List<Student> resultSet = (List<Student>) session.getAttribute("students");--%>
+        <%--for (Student student : resultSet) {--%>
+        <%--out.print("<tr>" + "<td>" + student.getId() + "</td>" + "<td>" + student.getName() + "</td>" + "<td>" + student.getGender() + "</td>" + "<td>" + student.getDob() + "<td><a href='student?action=queryById&id=" + student.getId() + "'>编辑</a></td>" + "<td><a href='student?action=remove&id=" + student.getId() + "' onclick='return del()'>删除</a></td>" + "</tr>");--%>
+        <%--}--%>
 
-    <%--%>--%>
-</table>
+        <%--%>--%>
+    </table>
+    <c:if test="${fn:length(sessionScope.students) ne 0}">
+
         <input type="submit" value="删除">
+    </c:if>
 
 </form>
 <%--</div>--%>

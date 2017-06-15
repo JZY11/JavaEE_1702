@@ -60,7 +60,7 @@ public class StudentServlet extends HttpServlet {
         }
 
         req.setAttribute("message", "出了一点问题哦");
-        req.getRequestDispatcher("default.sql").forward(req, resp);
+        req.getRequestDispatcher("default.jsp").forward(req, resp);
     }
 
 
@@ -225,7 +225,7 @@ public class StudentServlet extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
 
         removeById(id,req,resp);
-        resp.sendRedirect("student?action=quryAll");
+        resp.sendRedirect("student?action=queryAll");
 
     }
 
@@ -241,7 +241,7 @@ public class StudentServlet extends HttpServlet {
             int id = Integer.parseInt(idString);
             removeById(id,req,resp);
         }
-        resp.sendRedirect("student?action=quryAll");
+        resp.sendRedirect("student?action=queryAll");
     }
 
 //    private boolean isConnected(Connection connection, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
