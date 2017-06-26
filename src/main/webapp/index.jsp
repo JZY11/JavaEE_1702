@@ -1,5 +1,4 @@
-<%@ page import="demo.model.Student" %>
-<%@ page import="java.util.List" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Tony.Jaa
   Date: 2017/6/7
@@ -26,11 +25,11 @@
         function del() {
             return confirm('是否确定要删除');
         }
-        function selectAll() {
-            var cb = document.getElementById('cb');
-            var items = document.getElementsByClassName('to_be_delete');
-            for (var i = 0; i < items.length; i++) {
-                items[i].checked = cb.checked
+        function selectAll() {// 页面前端JS来实现全选功能  触发一个事件，将事件封装在一个函数
+            var cb = document.getElementById('cb');// 全选全不选复选框(显示其状态，是否被选中)
+            var items = document.getElementsByClassName('to_be_delete');// 取出所有数据部分的复选框(为checkbox的一个数组)
+            for (var i = 0; i < items.length; i++) {// 做一循环
+                items[i].checked = cb.checked; //items[i].checked复选框的列是否被选中   cb.checked复选框头是否被选中
             }
         }
     </script>
@@ -76,12 +75,12 @@ ${sessionScope.nick}
     <table border="1">
 
         <c:choose>
-            <c:when test="${fn:length(sessionScope.students) eq 0}">
+            <c:when test="${fn:length(sessionScope.students) eq 0}"><!--判断集合类的长度(即元素的个数),,c:when可以有多个，c:otherwise可以没有，有的话只可以有一个。。c:choose没有具体含义-->
                 当前没有记录
             </c:when>
             <c:otherwise>
                 <tr>
-                    <th><input id="cb" type="checkbox" onclick="selectAll()">序号</th>
+                    <th><input id="cb" type="checkbox" onclick="selectAll()">序号</th><!-- 页面前端JS来实现全选功能input id="cb" type="checkbox" onclick="selectAll()"-->
                     <th>姓名</th>
                     <th>性别</th>
                     <th>出生日期</th>
@@ -90,7 +89,7 @@ ${sessionScope.nick}
             </c:otherwise>
         </c:choose>
 
-        <c:forEach var="student" items="${sessionScope.students}" varStatus="vs">
+        <c:forEach var="student" items="${sessionScope.students}" varStatus="vs"><!-- c:forEach循环标记，以后会经常用到-->
             <tr>
                 <td><input class="to_be_delete" type="checkbox" name="ids" value="${student.id}">${vs.count}</td>
                 <td>${student.name}</td>
